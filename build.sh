@@ -2,7 +2,7 @@
 
 # Want to ensure we are using the right tools to build
 # this thing.
-PATH=/usr/bin:/bin:$(pwd)/install/noprefix/x86_64-apple-darwin/bin/
+PATH=/usr/bin:/bin:$(pwd)/install/noprefix/x86_64-apple-darwin/bin/:/usr/local/bin
 export PATH
 
 # The standard GNU triplet.
@@ -150,7 +150,6 @@ build_devtree_pkg ()
         $PACKAGEDIR/configure \
             --prefix=$PREFIX \
             --exec-prefix=$EPREFIX \
-            --program-prefix=$TARGET- \
             --host=$HOST \
             --build=$BUILD \
             --disable-shared \
@@ -178,5 +177,11 @@ build_mpc ()
     build_devtree_pkg mpc
 }
 
+# gettext package
+build_gettext ()
+{
+    build_devtree_pkg gettext
+}
 
-build_gdb
+
+build_gettext

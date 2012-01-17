@@ -16,3 +16,6 @@
 [submodule "source/gdb"]
 	path = source/gdb
 	url = git://github.com/bennoleslie/gdb.git
+[submodule "source/gettext"]
+	path = source/gettext
+	url = git://github.com/bennoleslie/gettext.git
