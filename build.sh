@@ -17,16 +17,20 @@ BUILDBASE=${BUILDBASE-$(pwd)/build}
 
 PAR=-j8
 
-PREFIX=/noprefix
-EPREFIX=$PREFIX/$HOST
+STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first"
 
+# binutils package
+build_binutils()
+{
 PACKAGE=binutils
 PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+PREFIX=/noprefix
+EPREFIX=$PREFIX/$HOST
 
 BUILDROOT=$BUILDBASE/$PACKAGE-$HOST-$TARGET
 INSTALLROOT=$(pwd)/install
 
-STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first"
 
 rm -fr $BUILDROOT &&
 mkdir $BUILDROOT &&
@@ -45,3 +49,38 @@ mkdir $BUILDROOT &&
     make $PAR &&
     make DESTDIR=$INSTALLROOT install
 )
+}
+
+build_devtree_pkg ()
+{
+    PACKAGE=$1
+    PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+    PREFIX=$(pwd)/devtree
+    EPREFIX=$PREFIX/$HOST
+
+    BUILDROOT=$BUILDBASE/$PACKAGE-$HOST
+
+    rm -fr $BUILDROOT &&
+    mkdir $BUILDROOT &&
+    (cd $BUILDROOT;
+        LDFLAGS=$STANDARD_LDFLAGS $PACKAGEDIR/configure \
+            --prefix=$PREFIX \
+            --exec-prefix=$EPREFIX \
+            --program-prefix=$TARGET- \
+            --host=$HOST \
+            --build=$BUILD \
+            --disable-shared \
+            &&
+        make $PAR &&
+        make install
+    )
+}
+
+# gmp package
+build_gmp ()
+{
+    build_devtree_pkg gmp
+}
+
+build_gmp

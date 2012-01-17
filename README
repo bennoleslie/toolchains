@@ -4,3 +4,19 @@ tools for a variety of embedded targets, starting with ARM.
 
 At the end of the day this should produce a tar ball containing
 a simple to extract set of tools.
+
+
+
+/install
+
+This directory contains the files that are tarred up and ready for
+release. Only the end binaries we wish to release get installed here,
+and not intermediate tools that we need along the way.
+
+/devtree
+
+This is where we install intermediate libraries such as gmp, mpfr, mpc,
+gettext, glib, ffi, etc. These libraries we don't need to ship as
+part of the binaries so we separate them. Additionally, the libraries
+and tools in here are not easily path independent, so they are actually
+compiled to this hard coded location.

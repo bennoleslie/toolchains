@@ -1,3 +1,6 @@
 [submodule "source/binutils"]
 	path = source/binutils
 	url = git://github.com/bennoleslie/binutils.git
+[submodule "source/gmp"]
+	path = source/gmp
+	url = git://github.com/bennoleslie/gmp.git
