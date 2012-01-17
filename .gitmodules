@@ -13,3 +13,6 @@
 [submodule "source/gcc"]
 	path = source/gcc
 	url = git://github.com/bennoleslie/gcc-core.git
+[submodule "source/gdb"]
+	path = source/gdb
+	url = git://github.com/bennoleslie/gdb.git

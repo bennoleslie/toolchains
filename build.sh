@@ -100,6 +100,38 @@ build_gcc()
 }
 
 
+
+# gdb package
+build_gdb()
+{
+PACKAGE=gdb
+PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+PREFIX=/noprefix
+EPREFIX=$PREFIX/$HOST
+
+BUILDROOT=$BUILDBASE/$PACKAGE-$HOST-$TARGET
+INSTALLROOT=$(pwd)/install
+
+
+rm -fr $BUILDROOT &&
+mkdir $BUILDROOT &&
+(cd $BUILDROOT;
+    LDFLAGS=$STANDARD_LDFLAGS $PACKAGEDIR/configure \
+        --prefix=$PREFIX \
+        --exec-prefix=$EPREFIX \
+        --program-prefix=$TARGET- \
+        --host=$HOST \
+        --build=$BUILD \
+        --target=$TARGET \
+        --disable-nls \
+        &&
+    make $PAR &&
+    make DESTDIR=$INSTALLROOT install
+)
+}
+
+
 build_devtree_pkg ()
 {
     PACKAGE=$1
@@ -147,4 +179,4 @@ build_mpc ()
 }
 
 
-build_gcc
+build_gdb
