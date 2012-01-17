@@ -18,7 +18,7 @@ BUILDBASE=${BUILDBASE-$(pwd)/build}
 PAR=-j8
 
 STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first -L$(pwd)/devtree/$HOST/lib"
-STANDARD_CPPFLAGS="-I$(pwd)/devtree/$HOST/include"
+STANDARD_CPPFLAGS="-I$(pwd)/devtree/include -I$(pwd)/devtree/$HOST/include"
 
 # binutils package
 build_binutils()
@@ -92,4 +92,11 @@ build_mpfr ()
     build_devtree_pkg mpfr
 }
 
-build_mpfr
+# mpc package
+build_mpc ()
+{
+    build_devtree_pkg mpc
+}
+
+
+build_mpc

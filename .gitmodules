@@ -7,3 +7,6 @@
 [submodule "source/mpfr"]
 	path = source/mpfr
 	url = git://github.com/bennoleslie/mpfr.git
+[submodule "source/mpc"]
+	path = source/mpc
+	url = git://github.com/bennoleslie/mpc.git
