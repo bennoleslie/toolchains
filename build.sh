@@ -2,7 +2,7 @@
 
 # Want to ensure we are using the right tools to build
 # this thing.
-PATH=/usr/bin:/bin:$(pwd)/install/noprefix/x86_64-apple-darwin/bin/:/usr/local/bin
+PATH=/usr/bin:/bin:$(pwd)/install/noprefix/x86_64-apple-darwin/bin/
 export PATH
 
 # The standard GNU triplet.
@@ -183,5 +183,10 @@ build_gettext ()
     build_devtree_pkg gettext
 }
 
+# libffi package
+build_libffi ()
+{
+    build_devtree_pkg libffi
+}
 
-build_gettext
+build_libffi
