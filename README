@@ -1,0 +1,6 @@
+This package is designed to create path-independent binary
+release of the GNU toolchain, QEMU simulator and other related
+tools for a variety of embedded targets, starting with ARM.
+
+At the end of the day this should produce a tar ball containing
+a simple to extract set of tools.
