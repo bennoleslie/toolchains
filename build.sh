@@ -17,7 +17,8 @@ BUILDBASE=${BUILDBASE-$(pwd)/build}
 
 PAR=-j8
 
-STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first"
+STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first -L$(pwd)/devtree/$HOST/lib"
+STANDARD_CPPFLAGS="-I$(pwd)/devtree/$HOST/include"
 
 # binutils package
 build_binutils()
@@ -64,7 +65,9 @@ build_devtree_pkg ()
     rm -fr $BUILDROOT &&
     mkdir $BUILDROOT &&
     (cd $BUILDROOT;
-        LDFLAGS=$STANDARD_LDFLAGS $PACKAGEDIR/configure \
+        LDFLAGS=$STANDARD_LDFLAGS \
+        CPPFLAGS=$STANDARD_CPPFLAGS \
+        $PACKAGEDIR/configure \
             --prefix=$PREFIX \
             --exec-prefix=$EPREFIX \
             --program-prefix=$TARGET- \
@@ -83,4 +86,10 @@ build_gmp ()
     build_devtree_pkg gmp
 }
 
-build_gmp
+# mpfr package
+build_mpfr ()
+{
+    build_devtree_pkg mpfr
+}
+
+build_mpfr

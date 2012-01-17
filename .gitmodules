@@ -4,3 +4,6 @@
 [submodule "source/gmp"]
 	path = source/gmp
 	url = git://github.com/bennoleslie/gmp.git
+[submodule "source/mpfr"]
+	path = source/mpfr
+	url = git://github.com/bennoleslie/mpfr.git
