@@ -10,3 +10,6 @@
 [submodule "source/mpc"]
 	path = source/mpc
 	url = git://github.com/bennoleslie/mpc.git
+[submodule "source/gcc"]
+	path = source/gcc
+	url = git://github.com/bennoleslie/gcc-core.git

@@ -2,7 +2,7 @@
 
 # Want to ensure we are using the right tools to build
 # this thing.
-PATH=/usr/bin:/bin
+PATH=/usr/bin:/bin:$(pwd)/install/noprefix/x86_64-apple-darwin/bin/
 export PATH
 
 # The standard GNU triplet.
@@ -15,10 +15,13 @@ TARGET=arm-none-eabi
 
 BUILDBASE=${BUILDBASE-$(pwd)/build}
 
-PAR=-j8
+PAR=${PAR--j8}
 
-STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first -L$(pwd)/devtree/$HOST/lib"
-STANDARD_CPPFLAGS="-I$(pwd)/devtree/include -I$(pwd)/devtree/$HOST/include"
+DEVTREE=$(pwd)/devtree
+DEVTREE_HOST=$DEVTREE/$HOST
+
+STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first -L$DEVTREE_HOST/lib"
+STANDARD_CPPFLAGS="-I$DEVTREE -I$DEVTREE_HOST/include"
 
 # binutils package
 build_binutils()
@@ -51,6 +54,51 @@ mkdir $BUILDROOT &&
     make DESTDIR=$INSTALLROOT install
 )
 }
+
+# gcc package
+build_gcc()
+{
+    PACKAGE=gcc
+    PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+    PREFIX=/noprefix
+    EPREFIX=$PREFIX/$HOST
+
+    BUILDROOT=$BUILDBASE/$PACKAGE-$HOST-$TARGET
+    INSTALLROOT=$(pwd)/install
+
+
+    rm -fr $BUILDROOT &&
+    mkdir $BUILDROOT &&
+    (cd $BUILDROOT;
+        LDFLAGS=$STANDARD_LDFLAGS \
+        $PACKAGEDIR/configure \
+            --prefix=$PREFIX \
+            --exec-prefix=$EPREFIX \
+            --program-prefix=$TARGET- \
+            --host=$HOST \
+            --build=$BUILD \
+            --target=$TARGET \
+            --disable-shared \
+            --disable-lto \
+            --disable-nls \
+            --enable-languages=c \
+            --disable-libssp \
+            --disable-libquadmath \
+            --disable-libgomp \
+            --disable-libgcj \
+            --with-gnu-as \
+            --with-gnu-ld \
+            --with-gmp=$DEVTREE_HOST \
+            --with-mpfr-lib=$DEVTREE_HOST/lib \
+            --with-mpfr-include=$DEVTREE/include \
+           \
+            &&
+        make $PAR &&
+        make DESTDIR=$INSTALLROOT install
+    )
+}
+
 
 build_devtree_pkg ()
 {
@@ -99,4 +147,4 @@ build_mpc ()
 }
 
 
-build_mpc
+build_gcc
