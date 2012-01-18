@@ -20,8 +20,8 @@ PAR=${PAR--j8}
 DEVTREE=$(pwd)/devtree
 DEVTREE_HOST=$DEVTREE/$HOST
 
-STANDARD_LDFLAGS="-Wl,-Z -Wl,-search_paths_first -L$DEVTREE_HOST/lib"
-STANDARD_CPPFLAGS="-I$DEVTREE -I$DEVTREE_HOST/include"
+STANDARD_LDFLAGS="-Wl,-search_paths_first -L$DEVTREE_HOST/lib"
+STANDARD_CPPFLAGS="-I$DEVTREE/include -I$DEVTREE_HOST/include"
 
 # binutils package
 build_binutils()
@@ -189,4 +189,35 @@ build_libffi ()
     build_devtree_pkg libffi
 }
 
-build_libffi
+# glib package
+build_glib ()
+{
+    PACKAGE=glib
+    PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+    PREFIX=$(pwd)/devtree
+    EPREFIX=$PREFIX/$HOST
+
+    BUILDROOT=$BUILDBASE/$PACKAGE-$HOST
+
+    rm -fr $BUILDROOT &&
+    mkdir $BUILDROOT &&
+    (cd $BUILDROOT;
+        MSGFMT=$EPREFIX/bin/msgfmt \
+        LIBFFI_LIBS=-lffi \
+        LIBFFI_CFLAGS=-I$EPREFIX/lib/libffi-3.0.10/include \
+        LDFLAGS=$STANDARD_LDFLAGS \
+        CPPFLAGS=$STANDARD_CPPFLAGS \
+        $PACKAGEDIR/configure \
+            --prefix=$PREFIX \
+            --exec-prefix=$EPREFIX \
+            --host=$HOST \
+            --build=$BUILD \
+            --disable-shared \
+            &&
+        make $PAR &&
+        make install
+    )
+}
+
+build_glib
