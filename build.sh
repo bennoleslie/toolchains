@@ -220,4 +220,35 @@ build_glib ()
     )
 }
 
+# pkg-config package
+build_pkg_config ()
+{
+    PACKAGE=pkg-config
+    PACKAGEDIR=$(pwd)/source/$PACKAGE
+
+    PREFIX=$(pwd)/devtree
+    EPREFIX=$PREFIX/$HOST
+
+    BUILDROOT=$BUILDBASE/$PACKAGE-$HOST
+
+    rm -fr $BUILDROOT &&
+    mkdir $BUILDROOT &&
+    (cd $BUILDROOT;
+        MSGFMT=$EPREFIX/bin/msgfmt \
+        GLIB_LIBS="-L$EPREFIX/lib -lglib-2.0 -lintl -liconv" \
+        GLIB_CFLAGS="-I$PREFIX/include/glib-2.0 -I$EPREFIX/lib/glib-2.0/include" \
+        LDFLAGS=$STANDARD_LDFLAGS \
+        CPPFLAGS=$STANDARD_CPPFLAGS \
+        $PACKAGEDIR/configure \
+            --prefix=$PREFIX \
+            --exec-prefix=$EPREFIX \
+            --host=$HOST \
+            --build=$BUILD \
+            --disable-shared \
+            &&
+        make $PAR &&
+        make install
+    )
+}
+
 build_glib

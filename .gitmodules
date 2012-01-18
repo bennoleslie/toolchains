@@ -25,3 +25,6 @@
 [submodule "source/glib"]
 	path = source/glib
 	url = git://github.com/bennoleslie/glib.git
+[submodule "source/pkg-config"]
+	path = source/pkg-config
+	url = git://github.com/bennoleslie/pkg-config.git
